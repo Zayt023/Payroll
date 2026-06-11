@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Eye, EyeOff, Loader2, Building2, Info } from "lucide-react"
 import { toast } from "sonner"
 import { useEffect } from "react"
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams()
   const [email, setEmail] = useState("admin@company.com")
   const [password, setPassword] = useState("admin123")
@@ -18,6 +18,40 @@ export default function LoginPage() {
     else if (searchParams.get("error")) toast.error("Login failed")
   }, [searchParams])
 
+  return (
+    <form action="/api/login" method="POST" className="space-y-4">
+      <input type="hidden" name="callbackUrl" value="/dashboard" />
+
+      <div className="form-group">
+        <label htmlFor="email">Work Email</label>
+        <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+          placeholder="name@company.com" required autoComplete="email" className="input" />
+      </div>
+
+      <div className="form-group">
+        <div className="flex justify-between items-center">
+          <label htmlFor="password">Password</label>
+          <button type="button" className="text-xs font-medium" style={{ color: "#3d766d" }}>Forgot password?</button>
+        </div>
+        <div className="relative">
+          <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••" required autoComplete="current-password" className="input pr-10" />
+          <button type="button" onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" className="btn btn-primary btn-lg w-full justify-center text-sm">
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+        Sign in
+      </button>
+    </form>
+  )
+}
+
+export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       <div className="hidden lg:flex flex-col w-[42%] p-12 surface-base border-r border-default">
@@ -59,34 +93,9 @@ export default function LoginPage() {
             <p className="text-sm text-secondary mt-1">Access your payroll dashboard.</p>
           </div>
 
-          <form action="/api/login" method="POST" className="space-y-4">
-            <input type="hidden" name="callbackUrl" value="/dashboard" />
-
-            <div className="form-group">
-              <label htmlFor="email">Work Email</label>
-              <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@company.com" required autoComplete="email" className="input" />
-            </div>
-
-            <div className="form-group">
-              <div className="flex justify-between items-center">
-                <label htmlFor="password">Password</label>
-                <button type="button" className="text-xs font-medium" style={{ color: "#3d766d" }}>Forgot password?</button>
-              </div>
-              <div className="relative">
-                <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••" required autoComplete="current-password" className="input pr-10" />
-                <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-lg w-full justify-center text-sm">
-              Sign in
-            </button>
-          </form>
+          <Suspense fallback={null}>
+            <LoginForm />
+          </Suspense>
 
           <div className="relative py-1">
             <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-default" /></div>

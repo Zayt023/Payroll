@@ -36,6 +36,9 @@ yarn-error.log*
 .env.production
 .env.development
 
+# legacy sqlite
+prisma/dev.db
+
 # vercel
 .vercel
 
