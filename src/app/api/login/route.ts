@@ -11,11 +11,11 @@ export async function POST(req: Request) {
 
     await signIn("credentials", { email, password, redirect: false })
 
-    return NextResponse.redirect(new URL(callbackUrl, req.url))
+    return NextResponse.redirect(new URL(callbackUrl, req.url), 303)
   } catch (error) {
     if (error instanceof AuthError) {
-      return NextResponse.redirect(new URL("/login?error=CredentialsSignin", req.url))
+      return NextResponse.redirect(new URL("/login?error=CredentialsSignin", req.url), 303)
     }
-    return NextResponse.redirect(new URL("/login?error=Unknown", req.url))
+    return NextResponse.redirect(new URL("/login?error=Unknown", req.url), 303)
   }
 }
