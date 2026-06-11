@@ -1,0 +1,292 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Role: ADMIN, HR, EMPLOYEE
+// PayrollStatus: DRAFT, COMPLETED, CANCELLED
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String
+  name          String
+  role          String   @default("HR")
+  avatar        String?
+  department    String?
+  isActive      Boolean  @default(true)
+  emailVerified DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions      Session[]
+  auditLogs     AuditLog[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Employee {
+  id             String   @id @default(cuid())
+  employeeId     String   @unique
+  firstName      String
+  lastName       String
+  middleName     String?
+  email          String   @unique
+  phone          String?
+  department     String
+  position       String
+  dateHired      DateTime
+  dateOfBirth    DateTime?
+  address        String?
+  city           String?
+  province       String?
+  zipCode        String?
+  sssNumber      String?
+  philhealthNumber String?
+  pagibigNumber  String?
+  tinNumber      String?
+  basicSalary    Float    @default(0)
+  dailyRate      Float    @default(0)
+  hourlyRate     Float    @default(0)
+  overtimeRate   Float    @default(0)
+  salaryType     String   @default("Monthly")
+  taxCode        String?
+  status         String   @default("Active")
+  avatar         String?
+  shiftStart     String   @default("08:00")
+  shiftEnd       String   @default("17:00")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  attendanceRecords AttendanceRecord[]
+  payrollRecords    PayrollRecord[]
+  allowances        Allowance[]
+  deductions        Deduction[]
+  generatedPayslips GeneratedPayslip[]
+
+  @@map("employees")
+}
+
+model PayrollBatch {
+  id          String        @id @default(cuid())
+  batchName   String
+  periodStart DateTime
+  periodEnd   DateTime
+  status      String   @default("DRAFT")
+  totalEmployees Int       @default(0)
+  totalGross  Float         @default(0)
+  totalDeductions Float    @default(0)
+  totalNetPay Float         @default(0)
+  uploadedBy  String
+  fileName    String?
+  fileUrl     String?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  records     PayrollRecord[]
+  auditLogs   AuditLog[]
+  payslips    GeneratedPayslip[]
+
+  @@map("payroll_batches")
+}
+
+model PayrollRecord {
+  id              String        @id @default(cuid())
+  batchId         String
+  employeeId      String
+  regularHours    Float         @default(0)
+  overtimeHours   Float         @default(0)
+  lateMinutes     Float         @default(0)
+  absences        Float         @default(0)
+  basicSalary     Float         @default(0)
+  overtimePay     Float         @default(0)
+  holidayPay      Float         @default(0)
+  grossPay        Float         @default(0)
+  sssDeduction    Float         @default(0)
+  philhealthDeduction Float    @default(0)
+  pagibigDeduction   Float     @default(0)
+  taxDeduction    Float         @default(0)
+  cashAdvance     Float         @default(0)
+  otherDeductions Float         @default(0)
+  totalDeductions Float         @default(0)
+  netPay          Float         @default(0)
+  status          String        @default("active")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  batch           PayrollBatch  @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  employee        Employee      @relation(fields: [employeeId], references: [id])
+  allowances      Allowance[]
+  deductions      Deduction[]
+  payslips        GeneratedPayslip[]
+
+  @@map("payroll_records")
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  attendanceAllocations AttendanceClientHour[]
+
+  @@map("clients")
+}
+
+model AttendanceRecord {
+  id          String   @id @default(cuid())
+  employeeId  String
+  date        DateTime
+  timeIn      DateTime?
+  timeOut     DateTime?
+  breakMinutes Float   @default(0)
+  totalHours  Float    @default(0)
+  overtime    Float    @default(0)
+  lateMinutes Float    @default(0)
+  status      String   @default("Present")
+  remarks     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  clientHours AttendanceClientHour[]
+
+  @@map("attendance_records")
+}
+
+model AttendanceClientHour {
+  id                String           @id @default(cuid())
+  attendanceRecordId String
+  clientId          String
+  hours             Float
+
+  attendanceRecord  AttendanceRecord  @relation(fields: [attendanceRecordId], references: [id], onDelete: Cascade)
+  client            Client            @relation(fields: [clientId], references: [id])
+
+  @@unique([attendanceRecordId, clientId])
+  @@map("attendance_client_hours")
+}
+
+model Allowance {
+  id              String        @id @default(cuid())
+  employeeId      String
+  payrollRecordId String?
+  name            String
+  amount          Float
+  type            String        @default("fixed")
+  frequency       String        @default("monthly")
+  effectiveDate   DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  employee        Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  payrollRecord   PayrollRecord? @relation(fields: [payrollRecordId], references: [id])
+
+  @@map("allowances")
+}
+
+model Deduction {
+  id              String        @id @default(cuid())
+  employeeId      String
+  payrollRecordId String?
+  name            String
+  amount          Float
+  type            String        @default("fixed")
+  frequency       String        @default("monthly")
+  effectiveDate   DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  employee        Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  payrollRecord   PayrollRecord? @relation(fields: [payrollRecordId], references: [id])
+
+  @@map("deductions")
+}
+
+model GeneratedPayslip {
+  id              String        @id @default(cuid())
+  payrollRecordId String
+  employeeId      String
+  batchId         String?
+  pdfUrl          String?
+  referenceNumber String        @unique
+  periodStart     DateTime
+  periodEnd       DateTime
+  generatedAt     DateTime      @default(now())
+  downloadedAt    DateTime?
+  emailedAt       DateTime?
+  status          String        @default("generated")
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  payrollRecord   PayrollRecord  @relation(fields: [payrollRecordId], references: [id])
+  employee        Employee       @relation(fields: [employeeId], references: [id])
+  batch           PayrollBatch?  @relation(fields: [batchId], references: [id])
+
+  @@map("generated_payslips")
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  entity      String
+  entityId    String?
+  details     String?
+  ipAddress   String?
+  batchId     String?
+  createdAt   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id])
+  batch       PayrollBatch? @relation(fields: [batchId], references: [id])
+
+  @@map("audit_logs")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String
+  title     String
+  message   String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+
+  @@map("verification_tokens")
+}
+
+model CompanySettings {
+  id      String @id @default("default")
+  name    String @default("A3MB Medical Services")
+  address String @default("Unit 7, Future 7 Building, Good Earth, Tondo, Manila, Philippines 1013")
+  tin     String @default("000-000-000-000")
+
+  @@map("company_settings")
+}
