@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
-import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts"
+import dynamic from "next/dynamic"
 import {
   Users, Wallet, FileText, TrendingUp, Plus, RefreshCw, AlertCircle,
   ArrowUpRight, ArrowDownRight, Building2, Activity, MapPin, Calendar,
@@ -10,6 +10,9 @@ import {
 import Link from "next/link"
 import { CalendarWidget } from "@/components/ui/calendar-widget"
 import { formatDateShort } from "@/lib/utils"
+
+const PayrollTrendChart = dynamic(() => import("./payroll-trend"), { ssr: false })
+const OvertimeChart = dynamic(() => import("./overtime-chart"), { ssr: false })
 
 interface DashboardData {
   totalEmployees: number
@@ -50,32 +53,6 @@ function pctChange(current: number, previous: number): { value: string; up: bool
   if (!previous) return null
   const pct = ((current - previous) / previous) * 100
   return { value: `${Math.abs(pct).toFixed(1)}%`, up: pct >= 0 }
-}
-
-const CHART_COLOR = "#3d766d"
-
-function TooltipContent({ active, payload, label }: any) {
-  if (!active || !payload) return null
-  return (
-    <div className="surface-base border border-default rounded-lg px-3 py-2 text-xs">
-      <p className="text-secondary mb-1">{label}</p>
-      {payload.map((p: any, i: number) => (
-        <p key={i} className="text-primary font-medium tabular-nums">
-          {p.name === "actual" ? "Actual" : "Projected"}: {formatCurrency(p.value)}
-        </p>
-      ))}
-    </div>
-  )
-}
-
-function TooltipContentOT({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null
-  return (
-    <div className="surface-base border border-default rounded-lg px-3 py-2 text-xs">
-      <p className="text-secondary mb-1">{label}</p>
-      <p className="text-primary font-medium tabular-nums" style={{ color: "#e67e22" }}>OT Cost: {formatCurrency(payload[0].value)}</p>
-    </div>
-  )
 }
 
 const tabs = ["Overview", "Employees", "Payroll", "Reports"]
@@ -281,25 +258,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="section-card-body">
                   <div className="h-52">
-                  {chartData.length === 0 ? (
-                    <div className="h-full flex items-center justify-center text-sm text-muted">No payroll data yet</div>
-                  ) : (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                        <defs>
-                          <linearGradient id="actualGrad" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor={CHART_COLOR} stopOpacity={0.08} />
-                            <stop offset="100%" stopColor={CHART_COLOR} stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border-default)" vertical={false} />
-                        <XAxis dataKey="month" tick={{ fill: "var(--text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} dy={6} />
-                        <YAxis tick={{ fill: "var(--text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₱${(v / 1000).toFixed(0)}k`} dx={-4} />
-                        <Tooltip content={<TooltipContent />} cursor={{ stroke: "var(--border-default)", strokeWidth: 1 }} />
-                        <Area type="monotone" dataKey="actual" stroke={CHART_COLOR} strokeWidth={2} fill="url(#actualGrad)" dot={{ r: 3, fill: CHART_COLOR, stroke: "var(--surface-base)", strokeWidth: 2 }} activeDot={{ r: 4.5, fill: CHART_COLOR, stroke: "var(--surface-base)", strokeWidth: 2 }} />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  )}
+                    <PayrollTrendChart data={chartData} />
                 </div>
               </div>
             </div>
@@ -313,19 +272,7 @@ export default function DashboardPage() {
               </div>
               <div className="section-card-body">
                 <div className="h-52">
-                  {data.overtimeTrend?.length === 0 || !data.overtimeTrend?.some(o => o.amount > 0) ? (
-                    <div className="h-full flex items-center justify-center text-sm text-muted">No overtime data yet</div>
-                  ) : (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data.overtimeTrend} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border-default)" vertical={false} />
-                        <XAxis dataKey="month" tick={{ fill: "var(--text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} dy={6} />
-                        <YAxis tick={{ fill: "var(--text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v) => `₱${(v / 1000).toFixed(0)}k`} dx={-4} />
-                        <Tooltip content={<TooltipContentOT />} cursor={{ fill: "var(--surface-sunken)" }} />
-                        <Bar dataKey="amount" radius={[4, 4, 0, 0]} style={{ fill: "#e67e22" }} maxBarSize={40} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  )}
+                    <OvertimeChart data={data.overtimeTrend || []} />
                 </div>
               </div>
             </div>
