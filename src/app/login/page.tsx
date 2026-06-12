@@ -109,23 +109,23 @@ export default function LoginPage() {
         <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full opacity-[0.04]" style={{ background: "#3d766d", transform: "translate(-30%, 30%)", filter: "blur(60px)" }} />
 
         <div className="w-full max-w-sm relative z-10">
-          <div className="text-center mb-10">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl mb-4" style={{ background: "#3d766d", color: "#fff" }}>
-              <Building2 className="h-6 w-6" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Welcome back</h2>
-            <p className="text-sm mt-1.5" style={{ color: "var(--text-secondary)" }}>Sign in to access your dashboard.</p>
-          </div>
-
-          <div className="rounded-2xl p-8" style={{
+          <div className="rounded-2xl p-10" style={{
             background: "var(--surface-base)",
             boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(61,118,109,0.06)"
           }}>
+            <div className="text-center mb-8">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl mb-4" style={{ background: "#3d766d", color: "#fff" }}>
+                <Building2 className="h-6 w-6" />
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight" style={{ color: "var(--text-primary)" }}>Welcome back</h2>
+              <p className="text-sm mt-1.5" style={{ color: "var(--text-secondary)" }}>Sign in to access your dashboard.</p>
+            </div>
+
             <Suspense fallback={null}>
               <LoginForm />
             </Suspense>
 
-            <div className="mt-6 pt-5 text-center" style={{ borderTop: "1px solid var(--border-subtle)" }}>
+            <div className="mt-8 pt-6 text-center" style={{ borderTop: "1px solid var(--border-subtle)" }}>
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 Secure enterprise connection
               </p>
