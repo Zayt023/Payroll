@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Building2, Plus, Loader2, Pencil, Trash2, X, Check } from "lucide-react"
 import { toast } from "sonner"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 interface Client {
   id: string; name: string; code: string; isActive: boolean
@@ -16,6 +17,7 @@ export default function PracticePage() {
   const [name, setName] = useState("")
   const [code, setCode] = useState("")
   const [saving, setSaving] = useState(false)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   async function fetchClients() {
     setLoading(true)
@@ -56,13 +58,13 @@ export default function PracticePage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this practice?")) return
     try {
       const res = await fetch(`/api/practice/${id}`, { method: "DELETE" })
       if (!res.ok) throw new Error("Delete failed")
       toast.success("Practice deleted")
       fetchClientsFresh()
     } catch (e: any) { toast.error(e.message) }
+    finally { setDeleteId(null) }
   }
 
   async function toggleActive(c: Client) {
@@ -148,7 +150,7 @@ export default function PracticePage() {
                     <td className="text-center">
                       <div className="flex gap-1 justify-center">
                         <button onClick={() => openEdit(c)} className="btn btn-ghost h-7 w-7 p-0"><Pencil className="h-3.5 w-3.5" /></button>
-                        <button onClick={() => handleDelete(c.id)} className="btn btn-ghost h-7 w-7 p-0"><Trash2 className="h-3.5 w-3.5" /></button>
+                        <button onClick={() => setDeleteId(c.id)} className="btn btn-ghost h-7 w-7 p-0"><Trash2 className="h-3.5 w-3.5" /></button>
                       </div>
                     </td>
                   </tr>
@@ -158,6 +160,17 @@ export default function PracticePage() {
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={deleteId !== null}
+        title="Delete practice"
+        message="Are you sure you want to delete this practice? This action cannot be undone."
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="danger"
+        onConfirm={() => deleteId && handleDelete(deleteId)}
+        onCancel={() => setDeleteId(null)}
+      />
     </div>
   )
 }
