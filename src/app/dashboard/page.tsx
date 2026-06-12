@@ -2,7 +2,7 @@ import { getDashboardStats } from "@/services/dashboard"
 import { getAllEmployees } from "@/services/employees"
 import DashboardClient from "./dashboard-client"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 300
 
 export default async function DashboardPage() {
   let data = null
