@@ -67,7 +67,7 @@ export function Sidebar() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 px-3 h-8 rounded-md text-sm font-medium transition-all duration-100",
+                      "flex items-center gap-3 px-3 h-8 rounded-md text-sm font-medium transition-all duration-100 focus:outline-none",
                       active
                         ? "text-primary" : "text-secondary hover:surface-raised hover:text-primary"
                     )}
