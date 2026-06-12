@@ -61,13 +61,14 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen" style={{ background: "var(--surface-base)" }}>
-      <div className="hidden lg:flex flex-col relative w-[42%] p-12 overflow-hidden" style={{ background: "var(--surface-base)" }}>
-        <div className="absolute inset-0 opacity-[0.04]" style={{
-          backgroundImage: "radial-gradient(circle at 20px 20px, var(--border-default) 1px, transparent 0)",
+      <div className="hidden lg:flex flex-col relative w-[42%] p-12 overflow-hidden" style={{ background: "linear-gradient(180deg, var(--surface-base) 0%, #f4f8f7 100%)" }}>
+        <div className="absolute inset-0" style={{
+          backgroundImage: "radial-gradient(circle at 20px 20px, var(--border-subtle) 1px, transparent 0)",
           backgroundSize: "40px 40px"
         }} />
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full opacity-[0.04]" style={{ background: "#3d766d", transform: "translate(-40%, -30%)" }} />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full opacity-[0.04]" style={{ background: "#3d766d", transform: "translate(40%, 30%)" }} />
+        <div className="absolute top-20 left-10 w-64 h-64 rounded-full opacity-[0.06]" style={{ background: "#3d766d", filter: "blur(60px)" }} />
+        <div className="absolute bottom-20 right-10 w-48 h-48 rounded-full opacity-[0.05]" style={{ background: "#3d766d", filter: "blur(50px)" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.03]" style={{ background: "#3d766d", filter: "blur(80px)" }} />
 
         <div className="relative z-10 flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-md" style={{ background: "#3d766d", color: "#fff" }}>
@@ -75,29 +76,51 @@ export default function LoginPage() {
           </div>
           <span className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>A3MB Medical Billing</span>
         </div>
+
         <div className="relative z-10 flex-1 flex flex-col justify-center max-w-sm">
-          <h1 className="text-2xl font-bold tracking-tight leading-tight" style={{ color: "var(--text-primary)" }}>
-            Enterprise Payroll<br />Management Platform
-          </h1>
-          <p className="text-sm mt-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-            High-precision financial automation for modern enterprise workflows.
-          </p>
-          <div className="mt-10 space-y-3">
-            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3d766d" }} />
-              SOC2 Compliant &amp; Enterprise Grade
+          <div className="mb-8">
+            <div className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#3d766d" }}>Platform Overview</div>
+            <h1 className="text-2xl font-bold tracking-tight leading-tight" style={{ color: "var(--text-primary)" }}>
+              Enterprise Payroll<br />Management Platform
+            </h1>
+          </div>
+
+          <div className="space-y-5">
+            <div className="flex items-start gap-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg shrink-0 mt-0.5" style={{ background: "rgba(61,118,109,0.1)" }}>
+                <svg className="h-4 w-4" style={{ color: "#3d766d" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <div>
+                <div className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>SOC2 Compliant</div>
+                <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Enterprise-grade security &amp; data protection</div>
+              </div>
             </div>
-            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3d766d" }} />
-              Full Audit Trail with Immutable Records
+            <div className="flex items-start gap-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg shrink-0 mt-0.5" style={{ background: "rgba(61,118,109,0.1)" }}>
+                <svg className="h-4 w-4" style={{ color: "#3d766d" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+              </div>
+              <div>
+                <div className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>Full Audit Trail</div>
+                <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Immutable records with complete traceability</div>
+              </div>
             </div>
-            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
-              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3d766d" }} />
-              Automated PH Government Deductions
+            <div className="flex items-start gap-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg shrink-0 mt-0.5" style={{ background: "rgba(61,118,109,0.1)" }}>
+                <svg className="h-4 w-4" style={{ color: "#3d766d" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
+              <div>
+                <div className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>PH Deductions Engine</div>
+                <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>Automated SSS, PhilHealth, Pag-IBIG &amp; tax</div>
+              </div>
             </div>
           </div>
         </div>
-        <p className="relative z-10 text-xs" style={{ color: "var(--text-muted)" }}>&copy; 2026 A3MB Medical Billing Services</p>
+
+        <div className="relative z-10 flex items-center gap-3 text-xs" style={{ color: "var(--text-muted)" }}>
+          <span>&copy; 2026 A3MB Medical Billing Services</span>
+          <span className="w-1 h-1 rounded-full" style={{ background: "var(--border-default)" }} />
+          <span>v1.0</span>
+        </div>
       </div>
 
       <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12" style={{ background: "var(--surface-sunken)" }}>
