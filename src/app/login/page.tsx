@@ -42,8 +42,8 @@ function LoginForm() {
         <label htmlFor="password" className="text-xs font-semibold tracking-wide uppercase" style={{ color: "var(--text-secondary)" }}>Password</label>
         <div className="relative">
           <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input h-11 pr-10" />
-          <button type="button" onClick={() => setShowPassword(!showPassword)}
+            placeholder="••••••••" required autoComplete="current-password" className="input h-11 pr-10" />
+          <button type="button" onMouseDown={() => setShowPassword(true)} onMouseUp={() => setShowPassword(false)} onMouseLeave={() => setShowPassword(false)}
             className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity" style={{ color: "var(--text-muted)" }}>
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -52,7 +52,7 @@ function LoginForm() {
 
       <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full justify-center text-sm h-11">
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-        {loading ? "Signing in\u2026" : "Sign in"}
+        {loading ? "Signing in…" : "Sign in"}
       </button>
     </form>
   )
