@@ -1,13 +1,15 @@
 "use client"
 
 import { Suspense, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Eye, EyeOff, Loader2, Building2, Info } from "lucide-react"
+import { signIn } from "next-auth/react"
 import { toast } from "sonner"
 import { useEffect } from "react"
 
 function LoginForm() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [email, setEmail] = useState("admin@company.com")
   const [password, setPassword] = useState("admin123")
   const [showPassword, setShowPassword] = useState(false)
@@ -18,10 +20,25 @@ function LoginForm() {
     else if (searchParams.get("error")) toast.error("Login failed")
   }, [searchParams])
 
-  return (
-    <form action="/api/login" method="POST" className="space-y-4">
-      <input type="hidden" name="callbackUrl" value="/dashboard" />
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
+    setLoading(false)
+    if (result?.error) {
+      toast.error("Invalid credentials")
+    } else {
+      router.push("/dashboard")
+      router.refresh()
+    }
+  }
 
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="form-group">
         <label htmlFor="email">Work Email</label>
         <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
@@ -43,7 +60,7 @@ function LoginForm() {
         </div>
       </div>
 
-      <button type="submit" className="btn btn-primary btn-lg w-full justify-center text-sm">
+      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full justify-center text-sm">
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         Sign in
       </button>
