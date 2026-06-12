@@ -101,7 +101,7 @@ export default function LoginPage() {
       </div>
 
       <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12" style={{ background: "var(--surface-sunken)" }}>
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-md">
           <div className="flex items-center gap-3 mb-10">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ background: "#3d766d", color: "#fff" }}>
               <Building2 className="h-[18px] w-[18px]" />
