@@ -64,13 +64,13 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
       <div className="hidden lg:flex flex-col relative w-[45%] items-center justify-center p-12 overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #1a2e2a 0%, #0f1e1b 50%, #1a2e2a 100%)" }}>
-        <div className="absolute inset-0 opacity-[0.03]" style={{
+        style={{ background: "linear-gradient(135deg, #f0f3f5 0%, #eaf3f1 50%, #f0f3f5 100%)" }}>
+        <div className="absolute inset-0 opacity-[0.04]" style={{
           backgroundImage: "radial-gradient(circle at 25% 25%, #3d766d 1px, transparent 1px), radial-gradient(circle at 75% 75%, #3d766d 1px, transparent 1px)",
           backgroundSize: "60px 60px"
         }} />
-        <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-[0.06]" style={{ background: "#3d766d", transform: "translate(-30%, -30%)", filter: "blur(80px)" }} />
-        <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-[0.06]" style={{ background: "#3d766d", transform: "translate(30%, 30%)", filter: "blur(80px)" }} />
+        <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-[0.08]" style={{ background: "#3d766d", transform: "translate(-30%, -30%)", filter: "blur(80px)" }} />
+        <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-[0.08]" style={{ background: "#3d766d", transform: "translate(30%, 30%)", filter: "blur(80px)" }} />
 
         <div className="relative z-10 max-w-md">
           <div className="flex items-center gap-3 mb-12">
@@ -78,40 +78,40 @@ export default function LoginPage() {
               <Building2 className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-sm font-semibold" style={{ color: "#e8edee" }}>A3MB Medical Billing</div>
-              <div className="text-[11px]" style={{ color: "rgba(232,237,238,0.5)" }}>Enterprise Payroll Platform</div>
+              <div className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>A3MB Medical Billing</div>
+              <div className="text-[11px]" style={{ color: "var(--text-muted)" }}>Enterprise Payroll Platform</div>
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold tracking-tight leading-tight" style={{ color: "#e8edee" }}>
+          <h1 className="text-3xl font-bold tracking-tight leading-tight" style={{ color: "var(--text-primary)" }}>
             Welcome back
           </h1>
-          <p className="text-sm mt-3 leading-relaxed" style={{ color: "rgba(232,237,238,0.6)" }}>
+          <p className="text-sm mt-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             Sign in to access your payroll dashboard, manage employee records, process payroll, and generate payslips.
           </p>
 
           <div className="mt-12 space-y-5">
-            <div className="flex items-center gap-3 text-sm" style={{ color: "rgba(232,237,238,0.55)" }}>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(61,118,109,0.15)" }}>
+            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(61,118,109,0.12)" }}>
                 <ShieldCheck className="h-4 w-4" style={{ color: "#3d766d" }} />
               </div>
               <span>Tier-1 enterprise security &amp; compliance</span>
             </div>
-            <div className="flex items-center gap-3 text-sm" style={{ color: "rgba(232,237,238,0.55)" }}>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(61,118,109,0.15)" }}>
+            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(61,118,109,0.12)" }}>
                 <FileText className="h-4 w-4" style={{ color: "#3d766d" }} />
               </div>
               <span>Complete PH government deductions engine</span>
             </div>
-            <div className="flex items-center gap-3 text-sm" style={{ color: "rgba(232,237,238,0.55)" }}>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(61,118,109,0.15)" }}>
+            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ background: "rgba(61,118,109,0.12)" }}>
                 <Calculator className="h-4 w-4" style={{ color: "#3d766d" }} />
               </div>
               <span>Automated payroll computation &amp; reporting</span>
             </div>
           </div>
 
-          <p className="text-xs mt-16" style={{ color: "rgba(232,237,238,0.3)" }}>&copy; 2026 A3MB Medical Billing Services</p>
+          <p className="text-xs mt-16" style={{ color: "var(--text-muted)" }}>&copy; 2026 A3MB Medical Billing Services</p>
         </div>
       </div>
 
