@@ -9,7 +9,7 @@ export async function GET() {
     const session = await auth()
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     const employees = await getAllEmployees()
-    return NextResponse.json(employees)
+    return NextResponse.json(employees, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30" } })
   } catch (error: any) {
     console.error("GET /api/employees error:", error)
     return NextResponse.json({ error: error?.message || "Unknown" }, { status: 500 })

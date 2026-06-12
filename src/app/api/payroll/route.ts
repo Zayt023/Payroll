@@ -8,7 +8,7 @@ export async function GET() {
     const session = await auth()
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     const batches = await getAllBatches()
-    return NextResponse.json(batches)
+    return NextResponse.json(batches, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30" } })
   } catch (error: any) {
     console.error("GET /api/payroll error:", error)
     return NextResponse.json([], { status: 200 })

@@ -7,7 +7,7 @@ export async function GET() {
     const session = await auth()
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     const logs = await getAuditLogs()
-    return NextResponse.json(logs)
+    return NextResponse.json(logs, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30" } })
   } catch (error: any) {
     console.error("GET /api/audit-logs error:", error)
     return NextResponse.json([], { status: 200 })

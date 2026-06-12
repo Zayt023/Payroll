@@ -6,7 +6,7 @@ export async function GET() {
   const session = await auth()
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   const clients = await prisma.client.findMany({ orderBy: { name: "asc" } })
-  return NextResponse.json(clients)
+  return NextResponse.json(clients, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=30" } })
 }
 
 export async function POST(req: Request) {
