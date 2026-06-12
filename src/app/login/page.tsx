@@ -12,7 +12,6 @@ function LoginForm() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [focused, setFocused] = useState<"email" | "password" | null>(null)
 
   useEffect(() => {
     if (searchParams.get("error") === "CredentialsSignin") toast.error("Invalid credentials")
@@ -32,36 +31,28 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="space-y-1.5">
-        <label htmlFor="email" className="text-xs font-medium tracking-wide" style={{ color: "var(--text-secondary)" }}>Email</label>
-        <div className="relative">
-          <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-            onFocus={() => setFocused("email")} onBlur={() => setFocused(null)}
-            placeholder="name@company.com" required autoComplete="email" className="input h-10" />
-          <div className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full transition-all duration-200"
-            style={{ background: focused === "email" ? "#3d766d" : "transparent", opacity: focused === "email" ? 1 : 0 }} />
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="form-group">
+        <label htmlFor="email" className="text-xs font-semibold tracking-wide uppercase" style={{ color: "var(--text-secondary)" }}>Email</label>
+        <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+          placeholder="name@company.com" required autoComplete="email" className="input" />
       </div>
 
-      <div className="space-y-1.5">
-        <label htmlFor="password" className="text-xs font-medium tracking-wide" style={{ color: "var(--text-secondary)" }}>Password</label>
+      <div className="form-group">
+        <label htmlFor="password" className="text-xs font-semibold tracking-wide uppercase" style={{ color: "var(--text-secondary)" }}>Password</label>
         <div className="relative">
           <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-            onFocus={() => setFocused("password")} onBlur={() => setFocused(null)}
-            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input h-10 pr-10" />
+            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input pr-10" />
           <button type="button" onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "var(--text-muted)" }}>
+            className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity" style={{ color: "var(--text-muted)" }}>
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
-          <div className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full transition-all duration-200"
-            style={{ background: focused === "password" ? "#3d766d" : "transparent", opacity: focused === "password" ? 1 : 0 }} />
         </div>
       </div>
 
-      <button type="submit" disabled={loading}
-        className="btn btn-primary btn-lg w-full justify-center text-sm h-10 mt-1">
-        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
+      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full justify-center text-sm h-10">
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {loading ? "Signing in\u2026" : "Sign in"}
       </button>
     </form>
   )
@@ -69,7 +60,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen" style={{ background: "var(--surface-base)" }}>
       <div className="hidden lg:flex flex-col relative w-[42%] p-12 overflow-hidden" style={{ background: "var(--surface-base)" }}>
         <div className="absolute inset-0 opacity-[0.04]" style={{
           backgroundImage: "radial-gradient(circle at 20px 20px, var(--border-default) 1px, transparent 0)",
@@ -110,17 +101,28 @@ export default function LoginPage() {
       </div>
 
       <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12" style={{ background: "var(--surface-sunken)" }}>
-        <div className="w-full max-w-sm animate-in fade-in duration-500">
-          <div className="text-center mb-8">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl mb-4" style={{ background: "#3d766d", color: "#fff" }}>
-              <Building2 className="h-6 w-6" />
+        <div className="w-full max-w-sm">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ background: "#3d766d", color: "#fff" }}>
+              <Building2 className="h-[18px] w-[18px]" />
             </div>
-            <h2 className="text-xl font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>Welcome back</h2>
-            <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Sign in to your account to continue.</p>
-            <div className="mx-auto mt-4 w-10 h-0.5 rounded-full" style={{ background: "#3d766d" }} />
+            <div>
+              <div className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>A3MB Medical Billing</div>
+              <div className="text-[11px]" style={{ color: "var(--text-secondary)" }}>Enterprise Payroll Platform</div>
+            </div>
           </div>
 
-          <div className="rounded-xl p-6" style={{ background: "var(--surface-base)", border: "1px solid var(--border-default)" }}>
+          <div className="relative rounded-2xl p-8" style={{
+            background: "var(--surface-base)",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)"
+          }}>
+            <div className="absolute top-0 left-8 right-8 h-[3px] rounded-b-full" style={{ background: "#3d766d" }} />
+
+            <div className="mb-7">
+              <h2 className="text-lg font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>Sign in</h2>
+              <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Enter your credentials to access the dashboard.</p>
+            </div>
+
             <Suspense fallback={null}>
               <LoginForm />
             </Suspense>
