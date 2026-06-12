@@ -31,18 +31,18 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="form-group">
         <label htmlFor="email" className="text-xs font-semibold tracking-wide uppercase" style={{ color: "var(--text-secondary)" }}>Email</label>
         <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-          placeholder="name@company.com" required autoComplete="email" className="input" />
+          placeholder="name@company.com" required autoComplete="email" className="input h-11" />
       </div>
 
       <div className="form-group">
         <label htmlFor="password" className="text-xs font-semibold tracking-wide uppercase" style={{ color: "var(--text-secondary)" }}>Password</label>
         <div className="relative">
           <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input pr-10" />
+            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input h-11 pr-10" />
           <button type="button" onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-1/2 -translate-y-1/2 transition-opacity" style={{ color: "var(--text-muted)" }}>
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -50,7 +50,7 @@ function LoginForm() {
         </div>
       </div>
 
-      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full justify-center text-sm h-10">
+      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full justify-center text-sm h-11">
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         {loading ? "Signing in\u2026" : "Sign in"}
       </button>
@@ -101,7 +101,7 @@ export default function LoginPage() {
       </div>
 
       <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12" style={{ background: "var(--surface-sunken)" }}>
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-sm">
           <div className="flex items-center gap-3 mb-10">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ background: "#3d766d", color: "#fff" }}>
               <Building2 className="h-[18px] w-[18px]" />
@@ -112,15 +112,15 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="relative rounded-2xl p-8" style={{
+          <div className="relative rounded-2xl p-10" style={{
             background: "var(--surface-base)",
             boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)"
           }}>
             <div className="absolute top-0 left-8 right-8 h-[3px] rounded-b-full" style={{ background: "#3d766d" }} />
 
-            <div className="mb-7">
-              <h2 className="text-lg font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>Sign in</h2>
-              <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Enter your credentials to access the dashboard.</p>
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>Sign in</h2>
+              <p className="text-sm mt-1.5" style={{ color: "var(--text-secondary)" }}>Enter your credentials to access the dashboard.</p>
             </div>
 
             <Suspense fallback={null}>
