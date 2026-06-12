@@ -21,7 +21,13 @@ function LoginForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    await signIn("credentials", { email, password, callbackUrl: "/dashboard" })
+    const result = await signIn("credentials", { email, password, redirect: false })
+    if (!result?.error) {
+      window.location.href = "/dashboard"
+    } else {
+      toast.error("Invalid credentials")
+      setLoading(false)
+    }
   }
 
   return (
