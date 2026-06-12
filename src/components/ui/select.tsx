@@ -50,31 +50,15 @@ export function Select({ value, onChange, options, className, placeholder }: Sel
         ref={btnRef}
         type="button"
         onClick={toggle}
-        className={className}
+        className={`input ${className || ""}`}
         style={{
-          background: "var(--surface-base)",
-          border: "1px solid var(--border-default)",
-          borderRadius: "var(--radius-md, 6px)",
-          padding: "0.5rem 0.75rem",
-          color: selected ? "var(--text-primary)" : "var(--text-muted)",
-          fontSize: "0.8125rem",
-          fontFamily: "var(--font-sans)",
-          height: 36,
-          width: "100%",
           display: "flex",
           alignItems: "center",
           gap: 8,
           textAlign: "left",
           cursor: "pointer",
-          outline: "none",
-          boxSizing: "border-box",
-          lineHeight: 1.5,
-          transition: "border-color 0.12s ease, box-shadow 0.12s ease",
+          color: selected ? "var(--text-primary)" : "var(--text-muted)",
         }}
-        onMouseEnter={(e) => { if (!open) (e.currentTarget.style.borderColor = "var(--border-focus)") }}
-        onMouseLeave={(e) => { if (!open) (e.currentTarget.style.borderColor = "var(--border-default)") }}
-        onFocus={(e) => { e.currentTarget.style.borderColor = "var(--border-focus)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(61, 118, 109, 0.08)" }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = "var(--border-default)"; e.currentTarget.style.boxShadow = "none" }}
       >
         <span style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {displayLabel}
@@ -90,7 +74,6 @@ export function Select({ value, onChange, options, className, placeholder }: Sel
             left: pos.left,
             width: Math.max(pos.width, 160),
             background: "var(--surface-base)",
-            opacity: 1,
           }}
         >
           {resolved.map((opt) => {
@@ -101,14 +84,9 @@ export function Select({ value, onChange, options, className, placeholder }: Sel
                 type="button"
                 onClick={() => { onChange(opt.value); setOpen(false) }}
                 style={{
-                  display: "block",
-          width: undefined,
-                  padding: "0.5rem 0.75rem",
-                  fontSize: "0.8125rem",
-                  fontFamily: "var(--font-sans)",
-                  textAlign: "left",
-                  border: "none",
-                  cursor: "pointer",
+                  display: "block", width: "100%", padding: "0.5rem 0.75rem",
+                  fontSize: "0.8125rem", fontFamily: "var(--font-sans)",
+                  textAlign: "left", border: "none", cursor: "pointer",
                   background: isSel ? "var(--surface-hover)" : "transparent",
                   color: "var(--text-primary)",
                   transition: "background 0.1s",
