@@ -6,14 +6,14 @@ const prisma = new PrismaClient()
 async function main() {
   console.log("Seeding database...")
 
-  const adminPassword = await bcrypt.hash("admin123", 12)
   const hrPassword = await bcrypt.hash("hr123", 12)
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@company.com" },
+    where: { email: "a3mb@admin.com" },
     update: {},
     create: {
-      email: "admin@company.com",
+      email: "a3mb@admin.com",
+      password: "$2b$12$nnl5MP4Cj0lwz1z6SgrOGOEFVm15.zJCHqJlbskiiITR4Z6uCS5P2",
       password: adminPassword,
       name: "Admin User",
       role: "ADMIN",
