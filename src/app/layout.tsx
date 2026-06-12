@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
+import { AppShell } from "@/components/layout/app-shell"
 
 export const metadata: Metadata = {
   title: "A3MB Medical Billing Services — Enterprise Payroll Management",
@@ -11,7 +12,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <Providers>{children}</Providers>
+        <Providers>
+          <AppShell>{children}</AppShell>
+        </Providers>
       </body>
     </html>
   )
