@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-const SESSION_COOKIE = "__Secure-next-auth.session-token"
-const SESSION_COOKIE_HTTP = "next-auth.session-token"
+const SESSION_COOKIE = "__Secure-authjs.session-token"
+const SESSION_COOKIE_HTTP = "authjs.session-token"
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(SESSION_COOKIE)?.value
