@@ -12,6 +12,7 @@ function LoginForm() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [focused, setFocused] = useState<"email" | "password" | null>(null)
 
   useEffect(() => {
     if (searchParams.get("error") === "CredentialsSignin") toast.error("Invalid credentials")
@@ -31,28 +32,36 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="form-group">
-        <label htmlFor="email">Work Email</label>
-        <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-          placeholder="name@company.com" required autoComplete="email" className="input" />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="space-y-1.5">
+        <label htmlFor="email" className="text-xs font-medium tracking-wide" style={{ color: "var(--text-secondary)" }}>Email</label>
         <div className="relative">
-          <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
-            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input pr-10" />
-          <button type="button" onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-          </button>
+          <input id="email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+            onFocus={() => setFocused("email")} onBlur={() => setFocused(null)}
+            placeholder="name@company.com" required autoComplete="email" className="input h-10" />
+          <div className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full transition-all duration-200"
+            style={{ background: focused === "email" ? "#3d766d" : "transparent", opacity: focused === "email" ? 1 : 0 }} />
         </div>
       </div>
 
-      <button type="submit" disabled={loading} className="btn btn-primary btn-lg w-full justify-center text-sm">
-        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-        Sign in
+      <div className="space-y-1.5">
+        <label htmlFor="password" className="text-xs font-medium tracking-wide" style={{ color: "var(--text-secondary)" }}>Password</label>
+        <div className="relative">
+          <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setFocused("password")} onBlur={() => setFocused(null)}
+            placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" required autoComplete="current-password" className="input h-10 pr-10" />
+          <button type="button" onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "var(--text-muted)" }}>
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+          <div className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full transition-all duration-200"
+            style={{ background: focused === "password" ? "#3d766d" : "transparent", opacity: focused === "password" ? 1 : 0 }} />
+        </div>
+      </div>
+
+      <button type="submit" disabled={loading}
+        className="btn btn-primary btn-lg w-full justify-center text-sm h-10 mt-1">
+        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
       </button>
     </form>
   )
@@ -61,48 +70,61 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen">
-      <div className="hidden lg:flex flex-col w-[42%] p-12 surface-base border-r border-default">
-        <div className="flex items-center gap-3">
+      <div className="hidden lg:flex flex-col relative w-[42%] p-12 overflow-hidden" style={{ background: "var(--surface-base)" }}>
+        <div className="absolute inset-0 opacity-[0.04]" style={{
+          backgroundImage: "radial-gradient(circle at 20px 20px, var(--border-default) 1px, transparent 0)",
+          backgroundSize: "40px 40px"
+        }} />
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full opacity-[0.04]" style={{ background: "#3d766d", transform: "translate(-40%, -30%)" }} />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full opacity-[0.04]" style={{ background: "#3d766d", transform: "translate(40%, 30%)" }} />
+
+        <div className="relative z-10 flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-md" style={{ background: "#3d766d", color: "#fff" }}>
             <Building2 className="h-4 w-4" />
           </div>
-          <span className="text-sm font-semibold text-primary">A3MB Medical Billing</span>
+          <span className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>A3MB Medical Billing</span>
         </div>
-        <div className="flex-1 flex flex-col justify-center max-w-sm">
-          <h1 className="text-2xl font-bold text-primary tracking-tight leading-tight">
+        <div className="relative z-10 flex-1 flex flex-col justify-center max-w-sm">
+          <h1 className="text-2xl font-bold tracking-tight leading-tight" style={{ color: "var(--text-primary)" }}>
             Enterprise Payroll<br />Management Platform
           </h1>
-          <p className="text-sm text-secondary mt-3 leading-relaxed">
+          <p className="text-sm mt-3 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             High-precision financial automation for modern enterprise workflows.
           </p>
           <div className="mt-10 space-y-3">
-            <div className="flex items-center gap-3 text-sm text-secondary">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#3d766d" }} />
+            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3d766d" }} />
               SOC2 Compliant &amp; Enterprise Grade
             </div>
-            <div className="flex items-center gap-3 text-sm text-secondary">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#3d766d" }} />
+            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3d766d" }} />
               Full Audit Trail with Immutable Records
             </div>
-            <div className="flex items-center gap-3 text-sm text-secondary">
-              <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#3d766d" }} />
+            <div className="flex items-center gap-3 text-sm" style={{ color: "var(--text-secondary)" }}>
+              <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#3d766d" }} />
               Automated PH Government Deductions
             </div>
           </div>
         </div>
-        <p className="text-xs text-muted">&copy; 2026 A3MB Medical Billing Services</p>
+        <p className="relative z-10 text-xs" style={{ color: "var(--text-muted)" }}>&copy; 2026 A3MB Medical Billing Services</p>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12">
-        <div className="w-full max-w-sm space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold text-primary tracking-tight">Sign in</h2>
-            <p className="text-sm text-secondary mt-1">Access your payroll dashboard.</p>
+      <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-12" style={{ background: "var(--surface-sunken)" }}>
+        <div className="w-full max-w-sm animate-in fade-in duration-500">
+          <div className="text-center mb-8">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl mb-4" style={{ background: "#3d766d", color: "#fff" }}>
+              <Building2 className="h-6 w-6" />
+            </div>
+            <h2 className="text-xl font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>Welcome back</h2>
+            <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>Sign in to your account to continue.</p>
+            <div className="mx-auto mt-4 w-10 h-0.5 rounded-full" style={{ background: "#3d766d" }} />
           </div>
 
-          <Suspense fallback={null}>
-            <LoginForm />
-          </Suspense>
+          <div className="rounded-xl p-6" style={{ background: "var(--surface-base)", border: "1px solid var(--border-default)" }}>
+            <Suspense fallback={null}>
+              <LoginForm />
+            </Suspense>
+          </div>
         </div>
       </div>
     </div>
