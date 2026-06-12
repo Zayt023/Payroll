@@ -8,7 +8,7 @@ interface Client {
   id: string; name: string; code: string; isActive: boolean
 }
 
-export default function ClientsPage() {
+export default function PracticePage() {
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -26,6 +26,13 @@ export default function ClientsPage() {
     finally { setLoading(false) }
   }
 
+  async function fetchClientsFresh() {
+    try {
+      const res = await fetch(`/api/practice?_=${Date.now()}`)
+      if (res.ok) setClients(await res.json())
+    } catch { setClients([]) }
+  }
+
   useEffect(() => { fetchClients() }, [])
 
   function openNew() { setEditing(null); setName(""); setCode(""); setShowForm(true) }
@@ -41,20 +48,20 @@ export default function ClientsPage() {
       const method = editing ? "PUT" : "POST"
       const res = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), code: code.trim() }) })
       if (!res.ok) { const d = await res.json(); throw new Error(d.error || "Save failed") }
-      toast.success(editing ? "Client updated" : "Client created")
+      toast.success(editing ? "Practice updated" : "Practice created")
       setShowForm(false)
-      fetchClients()
+      fetchClientsFresh()
     } catch (e: any) { toast.error(e.message) }
     finally { setSaving(false) }
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this client?")) return
+    if (!confirm("Delete this practice?")) return
     try {
       const res = await fetch(`/api/practice/${id}`, { method: "DELETE" })
       if (!res.ok) throw new Error("Delete failed")
-      toast.success("Client deleted")
-      fetchClients()
+      toast.success("Practice deleted")
+      fetchClientsFresh()
     } catch (e: any) { toast.error(e.message) }
   }
 
@@ -62,7 +69,7 @@ export default function ClientsPage() {
     try {
       const res = await fetch(`/api/practice/${c.id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: c.name, code: c.code, isActive: !c.isActive }) })
       if (!res.ok) throw new Error("Update failed")
-      fetchClients()
+      fetchClientsFresh()
     } catch (e: any) { toast.error(e.message) }
   }
 
@@ -83,7 +90,7 @@ export default function ClientsPage() {
           <div className="section-card-body">
             <form onSubmit={handleSave} className="flex items-end gap-3">
               <div className="form-group flex-1">
-                <label>Client Name</label>
+                <label>Practice Name</label>
                 <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Manila Medical Center" required />
               </div>
               <div className="form-group w-40">
@@ -115,8 +122,8 @@ export default function ClientsPage() {
               <div className="w-12 h-12 rounded-xl surface-raised flex items-center justify-center mb-3">
                 <Building2 className="h-6 w-6 text-secondary" />
               </div>
-              <h3 className="text-sm font-semibold text-primary mb-1">No clients yet</h3>
-              <p className="text-xs text-muted">Add clients to allocate timesheet hours for billing.</p>
+              <h3 className="text-sm font-semibold text-primary mb-1">No practices yet</h3>
+              <p className="text-xs text-muted">Add practices to allocate timesheet hours for billing.</p>
             </div>
           ) : (
             <table className="table">
