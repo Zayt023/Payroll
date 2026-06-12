@@ -2,14 +2,14 @@
 
 import { Suspense, useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { Eye, EyeOff, Loader2, Building2, Info } from "lucide-react"
+import { Eye, EyeOff, Loader2, Building2 } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { toast } from "sonner"
 
 function LoginForm() {
   const searchParams = useSearchParams()
-  const [email, setEmail] = useState("admin@company.com")
-  const [password, setPassword] = useState("admin123")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -39,10 +39,7 @@ function LoginForm() {
       </div>
 
       <div className="form-group">
-        <div className="flex justify-between items-center">
-          <label htmlFor="password">Password</label>
-          <button type="button" className="text-xs font-medium" style={{ color: "#3d766d" }}>Forgot password?</button>
-        </div>
+        <label htmlFor="password">Password</label>
         <div className="relative">
           <input id="password" name="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••" required autoComplete="current-password" className="input pr-10" />
@@ -107,32 +104,7 @@ export default function LoginPage() {
             <LoginForm />
           </Suspense>
 
-          <div className="relative py-1">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-default" /></div>
-            <div className="relative flex justify-center"><span className="px-3 text-[10px] uppercase tracking-widest text-muted">Demo Credentials</span></div>
-          </div>
 
-          <div className="section-card p-4">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl surface-raised flex items-center justify-center shrink-0">
-                <Info className="h-4 w-4 text-secondary" />
-              </div>
-              <div className="flex-1">
-                <h4 className="text-xs font-semibold text-primary">Demo Environment</h4>
-                <p className="text-xs text-muted mt-1">Use these credentials:</p>
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  <div className="surface-raised p-2 rounded-lg border border-default">
-                    <p className="text-[9px] text-muted uppercase font-medium">Email</p>
-                    <p className="text-xs font-mono text-primary mt-0.5">admin@company.com</p>
-                  </div>
-                  <div className="surface-raised p-2 rounded-lg border border-default">
-                    <p className="text-[9px] text-muted uppercase font-medium">Password</p>
-                    <p className="text-xs font-mono text-primary mt-0.5">admin123</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
