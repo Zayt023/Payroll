@@ -1,7 +1,7 @@
 "use client"
 
 import { Suspense, useState } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { Eye, EyeOff, Loader2, Building2, Info } from "lucide-react"
 import { signIn } from "next-auth/react"
 import { toast } from "sonner"
@@ -9,7 +9,6 @@ import { useEffect } from "react"
 
 function LoginForm() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   const [email, setEmail] = useState("admin@company.com")
   const [password, setPassword] = useState("admin123")
   const [showPassword, setShowPassword] = useState(false)
@@ -32,8 +31,7 @@ function LoginForm() {
     if (result?.error) {
       toast.error("Invalid credentials")
     } else {
-      router.push("/dashboard")
-      router.refresh()
+      window.location.href = "/dashboard"
     }
   }
 
