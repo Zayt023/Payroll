@@ -56,7 +56,7 @@ export default function NewEmployeePage() {
   return (
     <div className="max-w-2xl space-y-5">
       <div className="flex items-center gap-3">
-        <Link href="/employees" className="btn btn-ghost btn-sm h-8 w-8 p-0"><ArrowLeft className="h-4 w-4" /></Link>
+        <Link href="/employees" className="btn btn-ghost btn-md h-9 px-3"><ArrowLeft className="h-4 w-4" /> Back</Link>
         <div className="page-header flex-1 mb-0">
           <h1>Add Employee</h1>
           <p>Enter the details of the new team member.</p>
